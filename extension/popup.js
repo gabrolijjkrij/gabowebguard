@@ -12,7 +12,7 @@
 // key client-side only for demo / personal-use simplicity.
 // =============================================================
 
-const API_KEY = "YOUR_API_KEY_HERE";
+const API_KEY = "8b0106f081ee2efa619cfae089f63afebe028945d39756fc22cdc75d40967452";
 const VT_BASE = "https://www.virustotal.com/api/v3";
 const CACHE_TTL_MS = 10 * 60 * 1000; // 10 minutes
 
@@ -153,7 +153,7 @@ async function scanCurrentUrl() {
     hideStats();
     return;
   }
-  if (!API_KEY || API_KEY === "YOUR_API_KEY_HERE") {
+  if (!API_KEY || API_KEY === "8b0106f081ee2efa619cfae089f63afebe028945d39756fc22cdc75d40967452") {
     setStatus("error", "🔑", "Missing API key. Edit popup.js and set API_KEY.");
     hideStats();
     return;
