@@ -1,13 +1,13 @@
 {
   "manifest_version": 3,
-  "name": "VirusTotal URL Scanner",
+  "name": "Gabo's WebGuard",
   "version": "1.0.0",
-  "description": "Scan the current tab's URL with VirusTotal and display a Safe / Suspicious / Malicious verdict.",
+  "description": "Gabo's WebGuard scans the current tab's URL and displays a Safe / Suspicious / Malicious verdict.",
   "permissions": ["activeTab", "tabs", "scripting", "storage"],
   "host_permissions": ["https://www.virustotal.com/*"],
   "action": {
     "default_popup": "popup.html",
-    "default_title": "VirusTotal URL Scanner",
+    "default_title": "Gabo's WebGuard",
     "default_icon": {
       "16": "icons/icon.png",
       "48": "icons/icon.png",
