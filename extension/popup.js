@@ -1,15 +1,11 @@
 // =============================================================
-//  VirusTotal URL Scanner — popup logic
+//  Gabo's WebGuard — popup logic
 // =============================================================
-//
-// IMPORTANT: Replace the placeholder below with your VirusTotal API key.
-// Get a free key at: https://www.virustotal.com/gui/my-apikey
 //
 // ⚠️ SECURITY NOTE
 // In a production extension you should NEVER ship an API key in client code.
 // The recommended pattern is to call your own backend proxy that holds the
-// key server-side and forwards requests to VirusTotal. This file keeps the
-// key client-side only for demo / personal-use simplicity.
+// key server-side. This file keeps the key client-side for personal use.
 // =============================================================
 
 const API_KEY = "8b0106f081ee2efa619cfae089f63afebe028945d39756fc22cdc75d40967452";
@@ -153,7 +149,7 @@ async function scanCurrentUrl() {
     hideStats();
     return;
   }
-  if (!API_KEY || API_KEY === "8b0106f081ee2efa619cfae089f63afebe028945d39756fc22cdc75d40967452") {
+  if (!API_KEY) {
     setStatus("error", "🔑", "Missing API key. Edit popup.js and set API_KEY.");
     hideStats();
     return;
