@@ -14,7 +14,63 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      profiles: {
+        Row: {
+          avatar_url: string | null
+          created_at: string
+          display_name: string | null
+          id: string
+        }
+        Insert: {
+          avatar_url?: string | null
+          created_at?: string
+          display_name?: string | null
+          id: string
+        }
+        Update: {
+          avatar_url?: string | null
+          created_at?: string
+          display_name?: string | null
+          id?: string
+        }
+        Relationships: []
+      }
+      scan_history: {
+        Row: {
+          created_at: string
+          harmless: number
+          id: string
+          malicious: number
+          suspicious: number
+          undetected: number
+          url: string
+          user_id: string
+          verdict: string
+        }
+        Insert: {
+          created_at?: string
+          harmless?: number
+          id?: string
+          malicious?: number
+          suspicious?: number
+          undetected?: number
+          url: string
+          user_id: string
+          verdict: string
+        }
+        Update: {
+          created_at?: string
+          harmless?: number
+          id?: string
+          malicious?: number
+          suspicious?: number
+          undetected?: number
+          url?: string
+          user_id?: string
+          verdict?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
