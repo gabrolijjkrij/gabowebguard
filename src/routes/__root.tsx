@@ -7,8 +7,6 @@ import {
   HeadContent,
   Scripts,
 } from "@tanstack/react-router";
-import { useEffect } from "react";
-import { supabase } from "@/integrations/supabase/client";
 
 import appCss from "../styles.css?url";
 
@@ -74,21 +72,24 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "Gabo's WebGuard" },
-      { name: "description", content: "Scan any website for malware, phishing & threats — free." },
-      { property: "og:title", content: "Gabo's WebGuard" },
-      { property: "og:description", content: "Scan any website for malware, phishing & threats — free." },
+      { title: "Webguard" },
+      { name: "description", content: "Web Guard analyzes current URLs using VirusTotal API for safety status." },
+      { name: "author", content: "Lovable" },
+      { property: "og:title", content: "Webguard" },
+      { property: "og:description", content: "Web Guard analyzes current URLs using VirusTotal API for safety status." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary" },
+      { name: "twitter:site", content: "@Lovable" },
+      { name: "twitter:title", content: "Webguard" },
+      { name: "twitter:description", content: "Web Guard analyzes current URLs using VirusTotal API for safety status." },
+      { property: "og:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/93bc418b-6b98-4ac6-8958-fcc48e71d793/id-preview-b1da8330--326f42b8-a6d5-4e1f-8a70-279ad4b4af78.lovable.app-1778787143859.png" },
+      { name: "twitter:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/93bc418b-6b98-4ac6-8958-fcc48e71d793/id-preview-b1da8330--326f42b8-a6d5-4e1f-8a70-279ad4b4af78.lovable.app-1778787143859.png" },
     ],
     links: [
       {
         rel: "stylesheet",
         href: appCss,
       },
-      { rel: "preconnect", href: "https://fonts.googleapis.com" },
-      { rel: "preconnect", href: "https://fonts.gstatic.com", crossOrigin: "anonymous" },
-      { rel: "stylesheet", href: "https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&display=swap" },
     ],
   }),
   shellComponent: RootShell,
@@ -113,15 +114,6 @@ function RootShell({ children }: { children: React.ReactNode }) {
 
 function RootComponent() {
   const { queryClient } = Route.useRouteContext();
-  const router = useRouter();
-
-  useEffect(() => {
-    const { data: { subscription } } = supabase.auth.onAuthStateChange(() => {
-      router.invalidate();
-      queryClient.invalidateQueries();
-    });
-    return () => subscription.unsubscribe();
-  }, [router, queryClient]);
 
   return (
     <QueryClientProvider client={queryClient}>
