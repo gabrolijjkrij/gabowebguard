@@ -6,30 +6,44 @@
     <link rel="stylesheet" href="styles.css" />
   </head>
   <body>
-    <header>
-      <h1>🛡️ Gabo's WebGuard</h1>
-    </header>
+    <div class="brand animate-up">
+      <div class="brand-logo">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+      </div>
+      <h1>Gabo's <span class="accent">WebGuard</span></h1>
+    </div>
 
-    <section class="url-box">
-      <span class="label">Current URL</span>
-      <div id="current-url" class="url" title="">—</div>
-    </section>
+    <div class="tabs animate-up">
+      <button class="tab active" data-panel="scan">Scan</button>
+      <button class="tab" data-panel="history">History</button>
+    </div>
 
-    <button id="scan-btn" class="scan-btn">Scan this page</button>
+    <div id="panel-scan" class="panel active">
+      <div class="url-box animate-up">
+        <span class="label">Current URL</span>
+        <div id="current-url" class="url" title="">—</div>
+      </div>
 
-    <section id="status" class="status idle">
-      <div class="status-icon" id="status-icon">•</div>
-      <div class="status-text" id="status-text">Ready to scan</div>
-    </section>
+      <button id="scan-btn" class="scan-btn">⚡ Scan this page</button>
 
-    <section id="stats" class="stats hidden">
-      <div class="stat malicious"><span id="stat-malicious">0</span><label>Malicious</label></div>
-      <div class="stat suspicious"><span id="stat-suspicious">0</span><label>Suspicious</label></div>
-      <div class="stat harmless"><span id="stat-harmless">0</span><label>Harmless</label></div>
-    </section>
+      <div id="status" class="status idle animate-up">
+        <div class="status-icon" id="status-icon">•</div>
+        <div class="status-text" id="status-text">Ready to scan</div>
+      </div>
+
+      <div id="stats" class="stats hidden">
+        <div class="stat malicious"><span id="stat-malicious">0</span><label>Malicious</label></div>
+        <div class="stat suspicious"><span id="stat-suspicious">0</span><label>Suspicious</label></div>
+        <div class="stat harmless"><span id="stat-harmless">0</span><label>Harmless</label></div>
+      </div>
+    </div>
+
+    <div id="panel-history" class="panel">
+      <div id="history-content"></div>
+    </div>
 
     <footer>
-      <small>Gabo's WebGuard</small>
+      <small>🛡️ Powered by 70+ engines</small>
     </footer>
 
     <script src="popup.js"></script>
