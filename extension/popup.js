@@ -49,6 +49,10 @@ function setStatus(kind, icon, text) {
 
   // Update toolbar badge via background worker.
   chrome.runtime.sendMessage({ type: "VT_STATUS", status: kind, tabId: currentTabId });
+  // Re-trigger animation
+  statusEl.classList.remove("animate-in");
+  void statusEl.offsetWidth;
+  statusEl.classList.add("animate-in");
 }
 
 function showStats({ malicious = 0, suspicious = 0, harmless = 0 } = {}) {
@@ -56,6 +60,9 @@ function showStats({ malicious = 0, suspicious = 0, harmless = 0 } = {}) {
   sSuspicious.textContent = suspicious;
   sHarmless.textContent   = harmless;
   statsEl.classList.remove("hidden");
+  statsEl.classList.remove("animate-in");
+  void statsEl.offsetWidth;
+  statsEl.classList.add("animate-in");
 }
 
 function hideStats() {
@@ -179,6 +186,7 @@ async function scanCurrentUrl() {
     }
 
     await setCached(currentUrl, stats);
+    await pushHistory(currentUrl, stats);
     const v = verdictFromStats(stats);
     setStatus(v.kind, v.icon, v.text);
     showStats(stats);
@@ -212,3 +220,56 @@ async function scanCurrentUrl() {
 })();
 
 scanBtn.addEventListener("click", scanCurrentUrl);
+
+// ---------- History ----------
+const HIST_KEY = "vt:history";
+async function pushHistory(url, stats) {
+  const v = verdictFromStats(stats);
+  const obj = await chrome.storage.local.get(HIST_KEY);
+  const list = obj[HIST_KEY] || [];
+  list.unshift({ url, kind: v.kind, ts: Date.now(), stats });
+  await chrome.storage.local.set({ [HIST_KEY]: list.slice(0, 50) });
+  if (document.querySelector('.tab[data-panel="history"].active')) renderHistory();
+}
+async function renderHistory() {
+  const obj = await chrome.storage.local.get(HIST_KEY);
+  const list = obj[HIST_KEY] || [];
+  const el = document.getElementById("history-content");
+  if (!list.length) { el.innerHTML = '<div class="history-empty">No scans yet.<br>Scan a page to see it here.</div>'; return; }
+  const fmt = (ts) => {
+    const d = Date.now() - ts;
+    if (d < 60000) return "just now";
+    if (d < 3600000) return Math.floor(d / 60000) + "m ago";
+    if (d < 86400000) return Math.floor(d / 3600000) + "h ago";
+    return new Date(ts).toLocaleDateString();
+  };
+  el.innerHTML =
+    '<div class="history-list">' +
+    list.map((h) => `
+      <div class="hist-item">
+        <div class="hist-dot ${h.kind}"></div>
+        <div class="hist-info">
+          <div class="hist-url" title="${h.url}">${h.url}</div>
+          <div class="hist-time">${fmt(h.ts)}</div>
+        </div>
+      </div>
+    `).join("") +
+    '</div>' +
+    '<button class="hist-clear" id="hist-clear">Clear history</button>';
+  document.getElementById("hist-clear").onclick = async () => {
+    await chrome.storage.local.remove(HIST_KEY);
+    renderHistory();
+  };
+}
+
+// ---------- Tabs ----------
+document.querySelectorAll(".tab").forEach((tab) => {
+  tab.addEventListener("click", () => {
+    document.querySelectorAll(".tab").forEach((t) => t.classList.remove("active"));
+    document.querySelectorAll(".panel").forEach((p) => p.classList.remove("active"));
+    tab.classList.add("active");
+    const panel = document.getElementById("panel-" + tab.dataset.panel);
+    panel.classList.add("active");
+    if (tab.dataset.panel === "history") renderHistory();
+  });
+});
