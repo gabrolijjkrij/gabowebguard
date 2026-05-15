@@ -1,7 +1,6 @@
 import { Link, useNavigate, useRouterState } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
-import { Shield, LogOut } from "lucide-react";
 
 export function Header() {
   const [email, setEmail] = useState<string | null>(null);
@@ -20,27 +19,23 @@ export function Header() {
   };
 
   return (
-    <header className="sticky top-0 z-50 glass border-b border-white/5">
-      <div className="mx-auto max-w-6xl flex items-center justify-between px-6 py-4">
+    <header className="sticky top-0 z-50 backdrop-blur-xl bg-background/70 border-b border-white/5">
+      <div className="mx-auto max-w-7xl flex items-center justify-between px-6 py-4 font-mono-jb text-[13px]">
         <Link to="/" className="flex items-center gap-2 group">
-          <div className="relative h-9 w-9 rounded-xl gradient-primary grid place-items-center glow-primary group-hover:scale-110 transition-transform">
-            <Shield className="h-5 w-5 text-white" />
-          </div>
-          <span className="font-display text-lg font-semibold tracking-tight">Gabo's <span className="gradient-text">WebGuard</span></span>
+          <span className="inline-block h-2.5 w-2.5 rounded-full bg-success shadow-[0_0_10px] shadow-success" />
+          <span className="uppercase tracking-[0.2em] text-muted-foreground">gabo<span className="text-foreground">/</span>webguard</span>
         </Link>
-        <nav className="flex items-center gap-2 text-sm">
+        <nav className="flex items-center gap-1">
           {email ? (
             <>
-              <Link to="/dashboard" className={`px-4 py-2 rounded-lg transition-colors ${path === "/dashboard" ? "bg-white/10" : "hover:bg-white/5"}`}>Dashboard</Link>
-              <span className="hidden sm:inline text-muted-foreground px-2">{email}</span>
-              <button onClick={logout} className="px-3 py-2 rounded-lg hover:bg-white/5 flex items-center gap-1.5 text-muted-foreground hover:text-foreground transition-colors">
-                <LogOut className="h-4 w-4" /> Logout
-              </button>
+              <Link to="/dashboard" className={`px-3 py-1.5 uppercase tracking-wider transition-colors ${path === "/dashboard" ? "text-foreground" : "text-muted-foreground hover:text-foreground"}`}>~/dashboard</Link>
+              <span className="hidden sm:inline text-muted-foreground/60 px-2 truncate max-w-[180px]">{email}</span>
+              <button onClick={logout} className="px-3 py-1.5 uppercase tracking-wider text-muted-foreground hover:text-destructive transition-colors">[logout]</button>
             </>
           ) : (
             <>
-              <Link to="/login" className="px-4 py-2 rounded-lg hover:bg-white/5">Sign in</Link>
-              <Link to="/login" search={{ mode: "signup" }} className="px-4 py-2 rounded-lg gradient-primary font-medium glow-primary hover:scale-[1.03] transition-transform">Get started</Link>
+              <Link to="/login" className="px-3 py-1.5 uppercase tracking-wider text-muted-foreground hover:text-foreground">sign-in</Link>
+              <Link to="/login" search={{ mode: "signup" }} className="px-3 py-1.5 uppercase tracking-wider bg-foreground text-background hover:bg-accent transition-colors">init →</Link>
             </>
           )}
         </nav>
