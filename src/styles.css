@@ -134,3 +134,6 @@
     border: 2px solid currentColor; animation: pulse-ring 2s ease-out infinite;
   }
 }
+
+/* Hide Lovable badge */
+a[href*="lovable.dev"] { display: none !important; }
