@@ -57,6 +57,7 @@ function Hero() {
   const ref = useRef<HTMLDivElement>(null);
   const { scrollYProgress } = useScroll({ target: ref, offset: ["start start", "end start"] });
   const y = useTransform(scrollYProgress, [0, 1], [0, -80]);
+  const lineH = useTransform(scrollYProgress, [0, 1], ["0%", "100%"]);
 
   const [url, setUrl] = useState("");
   const submit = (e: React.FormEvent) => {
@@ -67,55 +68,128 @@ function Hero() {
 
   return (
     <section ref={ref} className="relative overflow-hidden border-b border-white/5">
-      <motion.div style={{ y }} className="pointer-events-none absolute right-[-6vw] top-[2vh] font-mono-jb font-bold text-[34vw] leading-none text-white/[0.022] select-none">
-        ░▒▓
-      </motion.div>
+      {/* decorative verticals */}
+      <div className="pointer-events-none absolute inset-0 z-0">
+        <motion.div style={{ height: lineH }} className="absolute top-0 left-[8%] w-px bg-gradient-to-b from-accent/60 via-accent/10 to-transparent" />
+        <motion.div style={{ height: lineH }} className="absolute top-0 right-[6%] w-px bg-gradient-to-b from-destructive/40 via-destructive/5 to-transparent" />
+        <div className="absolute top-1/2 inset-x-0 h-px bg-white/[0.04]" />
+        <motion.div style={{ y }} className="absolute -right-[8vw] top-[18vh] font-mono-jb font-bold text-[38vw] leading-none text-white/[0.02] select-none">
+          ░▒▓
+        </motion.div>
+      </div>
 
-      <div className="relative mx-auto max-w-[1400px] px-6 pt-14 pb-24">
-        <div className="font-mono-jb text-[11px] uppercase tracking-[0.3em] text-muted-foreground flex flex-wrap items-center gap-x-6 gap-y-2">
-          <span>est. 2026 · made in the dark</span>
-          <span className="ml-auto text-success flex items-center gap-2">
-            <span className="h-1.5 w-1.5 rounded-full bg-success animate-pulse" /> 73 engines · live
+      <div className="relative z-10 mx-auto max-w-[1400px] px-6 pt-12 pb-28">
+        <div className="flex items-center gap-4 font-mono-jb text-[10px] uppercase tracking-[0.3em] text-muted-foreground/60">
+          <span>est. 2026</span>
+          <span className="h-px w-8 bg-white/15" />
+          <span>made in the dark</span>
+          <span className="ml-auto flex items-center gap-2 text-accent">
+            <span className="h-1 w-1 rounded-full bg-accent" />
+            73 engines · live
           </span>
         </div>
 
-        <h1 className="mt-12 font-display font-bold text-[16vw] md:text-[11vw] leading-[0.85] tracking-[-0.04em]">
-          <span className="block">the&nbsp;web</span>
-          <span className="block">is <span className="font-serif-i font-normal italic text-destructive/90">hostile</span>.</span>
-          <span className="block text-muted-foreground/40">we make it<span className="text-foreground"> legible.</span></span>
-        </h1>
+        <div className="mt-20 grid lg:grid-cols-12 gap-x-10">
+          {/* hero text + input */}
+          <div className="lg:col-span-8">
+            <motion.h1
+              initial={{ opacity: 0, y: 24 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1] }}
+              className="font-display font-semibold text-[14vw] md:text-[8.4vw] leading-[0.9] tracking-[-0.045em] text-foreground"
+            >
+              The web is <br />
+              <span className="font-serif-i italic font-normal text-destructive pr-3">hostile.</span>{" "}
+              <span className="text-foreground/15">We make it legible.</span>
+            </motion.h1>
 
-        <div className="mt-14 grid lg:grid-cols-12 gap-10 items-start">
-          <div className="lg:col-span-7">
-            <form onSubmit={submit} className="hairline bg-black/30 flex items-stretch focus-within:border-accent/60 transition-colors">
-              <span className="font-mono-jb text-accent px-4 py-5 self-center text-sm">$</span>
-              <input
-                value={url}
-                onChange={(e) => setUrl(e.target.value)}
-                placeholder="paste a url. we'll do the rest."
-                className="flex-1 bg-transparent font-mono-jb text-sm md:text-base py-5 outline-none placeholder:text-muted-foreground/50"
-                spellCheck={false}
-              />
-              <button type="submit" className="bg-foreground text-background font-mono-jb text-xs uppercase tracking-wider px-6 hover:bg-accent transition-colors">
-                scan →
+            <motion.form
+              onSubmit={submit}
+              initial={{ opacity: 0, y: 16 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.7, delay: 0.3 }}
+              className="relative group max-w-2xl mt-16"
+            >
+              <div className="absolute -inset-1 bg-accent/10 blur-md opacity-0 group-focus-within:opacity-100 transition-opacity duration-500" />
+              <div className="relative flex bg-black/60 hairline focus-within:border-accent/70 transition-colors">
+                <span className="flex items-center px-5 font-mono-jb text-accent/60 text-sm">$</span>
+                <input
+                  value={url}
+                  onChange={(e) => setUrl(e.target.value)}
+                  placeholder="paste a url. we'll do the rest."
+                  spellCheck={false}
+                  className="flex-1 bg-transparent font-mono-jb text-sm md:text-base py-6 outline-none placeholder:text-muted-foreground/40 text-foreground"
+                />
+                <button
+                  type="submit"
+                  className="px-8 md:px-10 bg-foreground text-background font-mono-jb text-xs font-bold uppercase tracking-[0.18em] hover:bg-accent hover:text-accent-foreground transition-colors"
+                >
+                  scan →
+                </button>
+              </div>
+            </motion.form>
+            <div className="mt-4 flex flex-wrap items-center gap-x-6 gap-y-2 font-mono-jb text-[10px] uppercase tracking-[0.18em]">
+              <span className="text-muted-foreground/40">try:</span>
+              <button
+                onClick={() => setUrl("login-paypa1.cn/verify")}
+                className="text-destructive/80 hover:text-destructive border-b border-destructive/30 hover:border-destructive transition-colors"
+              >
+                login-paypa1.cn/verify
               </button>
-            </form>
-            <div className="mt-3 font-mono-jb text-[11px] text-muted-foreground/70">
-              try: <button onClick={() => setUrl("login-paypa1.cn/verify")} className="text-destructive hover:underline">login-paypa1.cn/verify</button>
-              <span className="mx-2">·</span>
-              <button onClick={() => setUrl("github.com")} className="text-success hover:underline">github.com</button>
+              <button
+                onClick={() => setUrl("github.com")}
+                className="text-accent/80 hover:text-accent border-b border-accent/30 hover:border-accent transition-colors"
+              >
+                github.com
+              </button>
             </div>
           </div>
 
-          <div className="lg:col-span-5 lg:border-l lg:border-white/10 lg:pl-10">
-            <p className="text-lg md:text-xl leading-snug">
-              WebGuard reads <span className="font-serif-i italic text-accent">every link</span> through 73 antivirus engines in under a second — phishing, malware, scams, drive-bys — all flagged before your browser even renders the page.
-            </p>
-            <div className="mt-6 flex flex-wrap gap-3 font-mono-jb text-[11px] uppercase tracking-wider">
-              <Link to="/login" search={{ mode: "signup" }} className="px-4 py-2 bg-foreground text-background hover:bg-accent transition-colors">→ free account</Link>
-              <a href="#install" className="px-4 py-2 hairline text-muted-foreground hover:text-foreground hover:border-white/30 transition-colors">↓ extension</a>
+          {/* sidebar */}
+          <motion.aside
+            initial={{ opacity: 0, x: 20 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.8, delay: 0.4 }}
+            className="lg:col-span-4 flex flex-col justify-end pt-16 lg:pt-0 lg:pl-10"
+          >
+            <div className="border-l border-white/10 pl-8">
+              <div className="flex items-center gap-2 mb-7">
+                <span className="h-1 w-1 rounded-full bg-accent" />
+                <span className="font-mono-jb text-[10px] tracking-[0.25em] uppercase text-accent">
+                  73 engines · live
+                </span>
+              </div>
+              <p className="text-sm md:text-[15px] leading-relaxed text-foreground/70">
+                WebGuard reads{" "}
+                <span className="font-serif-i italic text-lg text-foreground">every link</span>{" "}
+                through 73 antivirus engines in under a second. Phishing, malware, and drive-bys are flagged before your browser even begins to render the first byte.
+              </p>
+              <div className="mt-8 flex flex-col gap-3">
+                <Link
+                  to="/login"
+                  search={{ mode: "signup" }}
+                  className="group flex items-center justify-between p-4 bg-accent/5 border border-accent/20 hover:bg-foreground hover:text-background hover:border-foreground transition-all"
+                >
+                  <span className="font-mono-jb text-[10px] tracking-[0.2em] uppercase font-bold">free account</span>
+                  <span className="opacity-0 group-hover:opacity-100 transition-opacity">→</span>
+                </Link>
+                <a
+                  href="#install"
+                  className="group flex items-center justify-between p-4 hairline text-muted-foreground hover:text-foreground hover:border-white/30 transition-all"
+                >
+                  <span className="font-mono-jb text-[10px] tracking-[0.2em] uppercase">extension</span>
+                  <span className="text-base">↓</span>
+                </a>
+              </div>
             </div>
-          </div>
+          </motion.aside>
+        </div>
+
+        {/* bottom marker strip */}
+        <div className="mt-24 pt-6 border-t border-white/[0.06] flex items-center justify-between font-mono-jb text-[9px] tracking-[0.4em] uppercase text-muted-foreground/40">
+          <span>0x9FF2 // system_active</span>
+          <span>node_04 · seoul</span>
+          <span>latency 142ms</span>
         </div>
       </div>
     </section>
